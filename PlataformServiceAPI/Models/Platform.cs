@@ -1,6 +1,6 @@
 ﻿namespace PlataformServiceAPI.Models;
 
-public class Plataform
+public class Platform
 {
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;

@@ -5,7 +5,7 @@ namespace PlataformServiceAPI.Data;
 
 public class AppDbContext : DbContext
 {
-	public DbSet<Plataform> Plataforms { get; set; }
+	public DbSet<Platform> Platforms { get; set; }
 
 	public AppDbContext(DbContextOptions<AppDbContext> opt) : base(opt)
 	{
@@ -14,17 +14,17 @@ public class AppDbContext : DbContext
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
-		modelBuilder.Entity<Plataform>()
+		modelBuilder.Entity<Platform>()
 			.Property(c => c.Name)
 			.HasMaxLength(100)
 			.IsRequired();
 
-		modelBuilder.Entity<Plataform>()
+		modelBuilder.Entity<Platform>()
 			.Property(c => c.Publisher)
 			.HasMaxLength(100)
 			.IsRequired();
 
-		modelBuilder.Entity<Plataform>()
+		modelBuilder.Entity<Platform>()
 			.Property(c => c.Cost)
 			.IsRequired();
 	}

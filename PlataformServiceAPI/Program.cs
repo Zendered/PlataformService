@@ -16,7 +16,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IPlatformRepo, PlatformRepo>();
 #endregion
 
-# region ImMemoryDb
+#region ImMemoryDb
 //var connection = builder.Configuration.GetConnectionString();
 builder.Services.AddDbContext<AppDbContext>(opt =>
     opt.UseInMemoryDatabase("ImMem"));

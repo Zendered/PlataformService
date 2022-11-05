@@ -46,6 +46,6 @@ public class PlatformsController : ControllerBase
 		repo.SaveChanges();
 
 		var returnPlatform = mapper.Map<PlatformReadDto>(platform);
-		return CreatedAtRoute(nameof(GetPlatformsById), new { platformId = returnPlatform.Id }, returnPlatform);
+		return CreatedAtAction(nameof(GetPlatformsById), new { platformId = returnPlatform.Id }, returnPlatform);
 	}
 }

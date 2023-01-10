@@ -20,22 +20,34 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IPlatformRepo, PlatformRepo>();
 #endregion
 
-#region ImMemoryDb
-//var connection = builder.Configuration.GetConnectionString();
-builder.Services.AddDbContext<AppDbContext>(opt =>
-    opt.UseInMemoryDatabase("ImMem"));
-#endregion
+if (builder.Environment.IsDevelopment())
+{
+    #region ImMemoryDb
+    builder.Services.AddDbContext<AppDbContext>(opt =>
+        opt.UseInMemoryDatabase("ImMem"));
+    #endregion
+    Console.WriteLine("--> Using InMem DB!");
+}
+else
+{
+    #region SQLServerDb
+    var connection = builder.Configuration.GetConnectionString("PlatformsConn");
+    builder.Services.AddDbContext<AppDbContext>(opt =>
+    opt.UseSqlServer(connection));
+    #endregion
+    Console.WriteLine("--> Using SQLServer DB!");
+}
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+//Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-PrepDb.PrepPopulation(app);
+PrepDb.PrepPopulation(app, builder.Environment.IsProduction());
 
 app.UseHttpsRedirection();
 

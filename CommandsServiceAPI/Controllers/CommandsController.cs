@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CommandsServiceAPI.Data;
 using CommandsServiceAPI.Dtos;
+using CommandsServiceAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CommandsServiceAPI.Controllers;
@@ -49,4 +50,22 @@ public class CommandsController : ControllerBase
         return Ok(res);
     }
 
+    [HttpPost]
+    public ActionResult<CommandReadDto> CreateCommandForPlatform(int platformId, CommandCreateDto commandDto)
+    {
+        Console.WriteLine($"--> Hit CreateCommandForPlatform: {platformId}");
+        bool repoExists = repo.PlatformExists(platformId);
+        if (!repoExists)
+        {
+            return NotFound();
+        }
+
+        var command = mapper.Map<Command>(commandDto);
+        repo.CreateCommand(platformId, command);
+        repo.SaveChanges();
+
+        var commandReadDto = mapper.Map<CommandReadDto>(command);
+
+        return CreatedAtRoute(nameof(GetCommandForPlatform), new { platformId, commandId = commandReadDto.Id, commandReadDto });
+    }
 }

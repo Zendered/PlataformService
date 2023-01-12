@@ -31,4 +31,22 @@ public class CommandsController : ControllerBase
         var res = mapper.Map<IEnumerable<CommandReadDto>>(commands);
         return Ok(res);
     }
+
+    [HttpGet("{commandId}", Name = "GetCommandForPlatform")]
+    public ActionResult<CommandReadDto> GetCommandForPlatform(int platformId, int commandId)
+    {
+        Console.WriteLine($"--> Hit GetCommandForPlatform: {platformId} / {commandId}");
+
+        bool repoExists = repo.PlatformExists(platformId);
+        var command = repo.GetCommand(platformId, commandId);
+        if (!repoExists || command is null)
+        {
+            return NotFound();
+        }
+
+        var res = mapper.Map<CommandReadDto>(command);
+
+        return Ok(res);
+    }
+
 }
